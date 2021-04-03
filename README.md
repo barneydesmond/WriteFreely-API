@@ -11,25 +11,25 @@ pip install writefreelyapi
 
 ## **Getting Started**
 
-Instanstiating:_
-Each request to the API will be made through an instance of the client class.
+_Instanstiating:_
+Each request to the API will be made through an instance of the Client class.
 
-The only argument to pass in for a client is the root domain of the Write Freely instance you want to work with. For example, if I? want to do stuff with my Write Freely blog 'https://personaljournal.ca/herbert-quain, I would instanciate like so:
+The only argument to pass in for a client is the root domain of the Write Freely instance you want to work with. For example, if I want to do stuff with my Write Freely blog 'https://personaljournal.ca/herbert-quain, I would instantiate like so:
 
 ```
 import writefreely
 
-c = writefreely.client('personaljournal.ca')
+c = writefreely.Client('personaljournal.ca')
 
-# No need to put 'https://' or anything like that.
+# No need to put 'https://' or anything like that
 
 ```
 or...
 
 ```
-from writefreely import client
+from writefreely import Client
 
-c = client('personaljournal.ca')
+c = Client('personaljournal.ca')
 
 # It is up to you really!
 ```
@@ -38,18 +38,16 @@ _Logging in and Setting Token:_
 Make sure to login and set the token, otherwise certain authorized requests will not be possible.
 
 ```
-from writefreely import client
+from writefreely import Client
 
-c = client('personajournal.ca')
+c = Client('personajournal.ca')
 
 c.login("username", "password")
 
 # This prints out the user data which includes the access token
-# We will store the token into the client instance for authenticated requests
+# The token is automatically stored into the client instance for authenticated requests
 
-c.setToken("00000000-0000-0000-0000-000000000000")
-
-# Prints out the token and you are set to use the API!
+# You are all set to use the API!
 ```
 
 _Logging Out:_
@@ -82,7 +80,7 @@ p = c.createPost('This is the body of the post.', 'This is a Title')
 print p
 
 # This will return the post's data when successful
-# Thatdata includes the post token which we'll need for doing cooling stuff with the post
+# That data includes the post token, which we'll need for doing cool stuff with the post
 ```
 Feel free to use extra kwargs to your post like created date and right-to-left. Feel free to look at additional args [here](https://developers.write.as/docs/api/#publish-a-post):
 
@@ -97,7 +95,7 @@ To create a collection post, all you need to add is the collection's alias to th
 p = c.createCPost('cjeller', 'This is a the body of the post.', 'This is a Title')
 print(p)
 
-# This will return the post's data 
+# This will return the post's data
 ```
 
 _Updating a Post:_
@@ -161,7 +159,7 @@ print(p)
 ```
 
 _Retrieve a Collection's Posts:_
-To get a collection's posts, all you need is the collection's alias. So if I wanted to grab all the posts from here: https://write.houe/bix/
+To get a collection's posts, all you need is the collection's alias. So if I wanted to grab all the posts from here: https://write.house/bix/
 
 ```
 posts = c.retrieveCPosts('bix')
