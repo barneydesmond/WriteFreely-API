@@ -18,6 +18,7 @@ class Client():
 
         # The token for making authenticated requests
         self.token = ''
+        self.user_record = {}
         self.u = User(domain)
         self.p = Post(domain)
         self.c = Collection(domain)
@@ -28,8 +29,9 @@ class Client():
 
     # AUTH
     def login(self, username, password):
-        user_record = self.u.auth(username, password)
-        return user_record
+        self.user_record = self.u.auth(username, password)
+        self.token = self.user_record['access_token']
+        return self.user_record
 
     def setToken(self, token):
         self.token = token
@@ -41,6 +43,7 @@ class Client():
     def logout(self):
         user_record = self.u.authout(self.token)
         self.token = ''
+        self.user_record = {}
         return user_record
 
     # USER
