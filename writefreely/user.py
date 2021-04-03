@@ -1,6 +1,7 @@
-import requests
+"User class for all user-centric operations"
+
 import json
-from uri import URI, ME_URI
+import requests
 
 class user(object):
     def __init__(self, domain):
@@ -8,7 +9,10 @@ class user(object):
         self.uri = "https://" + "%s/api/me" % domain
 
     def auth(self, user, password):
-    # This is how you will authenticate your account and retreive an access token for future requests
+        """
+        This is how you will authenticate your account and retreive an access
+        token for future requests
+        """
         data = {"alias": user, "pass": password }
 
         r = requests.post('https://{}/auth/login'.format(self.domain), data=json.dumps(data),

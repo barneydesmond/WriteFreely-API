@@ -1,6 +1,6 @@
+"For reading other people's posts"
+
 import requests
-import json
-from uri import RWA_URI
 
 class read(object):
     def __init__(self, domain):

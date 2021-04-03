@@ -1,3 +1,5 @@
+"Formattable URI strings used everywhere"
+
 import requests
 import json
 

@@ -1,6 +1,7 @@
-import requests
+"Implements all Post-related operations"
+
 import json
-import code
+import requests
 
 class post(object):
     def __init__(self, domain):

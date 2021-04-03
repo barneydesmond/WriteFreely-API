@@ -1,14 +1,21 @@
-from user import user
-from posts import post
-from collection import collection
-from rwa import read
+"""
+A flexible Write Freely API Client library for Python
+"""
+
+# pylint: disable=invalid-name, missing-function-docstring
+
+from .user import user
+from .posts import post
+from .collection import collection
+from .rwa import read
 
 class client():
     def __init__(self, domain):
-# When you instantiate a client, you must include the domain of your Write Freely instance
-# For example, c = writefreely.client('write.house')
+        # When you instantiate a client, you must include the domain of your Write Freely instance
+        # For example, c = writefreely.client('write.house')
         self.domain = domain
-# The token for making authenticated requests
+
+        # The token for making authenticated requests
         self.token = ''
         self.u = user(domain)
         self.p = post(domain)
@@ -17,10 +24,11 @@ class client():
 
     def getDomain(self):
         return self.domain
-# AUTH
+
+    # AUTH
     def login(self, username, password):
-        user = self.u.auth(username, password)
-        return user
+        user_record = self.u.auth(username, password)
+        return user_record
 
     def setToken(self, token):
         self.token = token
@@ -30,11 +38,11 @@ class client():
         return self.token
 
     def logout(self):
-        user = self.u.authout(self.token)
+        user_record = self.u.authout(self.token)
         self.token = ''
-        return user
+        return user_record
 
-# USER
+    # USER
     def retrievePosts(self):
         posts = self.u.getPosts(self.token)
         return posts
@@ -47,7 +55,7 @@ class client():
         channels = self.u.getChannels(self.token)
         return channels
 
-# POST
+    # POST
     def retrievePost(self, id):
         post = self.p.get(id)
         return post

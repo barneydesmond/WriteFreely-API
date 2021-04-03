@@ -1,6 +1,7 @@
-import requests
+"Handle collections of posts"
+
 import json
-from uri import COLL_URI
+import requests
 
 class collection(object):
     def __init__(self, domain):
