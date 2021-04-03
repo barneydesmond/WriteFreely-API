@@ -1,8 +1,10 @@
 "For reading other people's posts"
 
+# pylint: disable=missing-class-docstring, missing-function-docstring, invalid-name
+
 import requests
 
-class read(object):
+class Reader(object):
     def __init__(self, domain):
         self.uri = 'https://{}/read/api/posts'.format(domain)
 
@@ -15,6 +17,5 @@ class read(object):
         if p.status_code != 200:
             return "Error in rwa(): %s" % p.json()["error_msg"]
 
-        else:
-            posts = p.json()["data"]
-            return posts
+        posts = p.json()["data"]
+        return posts

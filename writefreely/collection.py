@@ -1,131 +1,120 @@
 "Handle collections of posts"
 
+# pylint: disable=missing-class-docstring, missing-function-docstring, invalid-name
+
 import json
 import requests
 
-class collection(object):
+def h_js():
+    return {"Content-Type":"application/json"}
+def h_authjs(token):
+    return {"Authorization": "Token %s" % token,
+            "Content-Type":"application/json"}
+
+class Collection(object):
     def __init__(self, domain):
         self.uri = 'https://{}/api/collections'.format(domain)
 
     def get(self, alias):
         c = requests.get(self.uri + "/%s" % alias,
-                headers={"Content-Type": "application/json"})
+                         headers=h_js())
 
         if c.status_code != 200:
             return "Error in retrieveCollection(): %s" % c.json()["error_msg"]
 
-        else:
-            collection = c.json()["data"]
-            return collection
+        collection = c.json()["data"]
+        return collection
 
 
     def create(self, token, alias, title):
-
         data = {"alias": alias,
-                "title": title }
+                "title": title}
 
         c = requests.post(self.uri, data=json.dumps(data),
-                        headers={"Authorization": "Token %s" % token,
-                        "Content-Type": "application/json"})
+                          headers=h_authjs(token))
 
         if c.status_code != 201:
             return "Error in createCollection(): %s" % c.json()["error_msg"]
 
-        else:
-            collection = c.json()["data"]
-            return collection
+        collection = c.json()["data"]
+        return collection
 
     def delete(self, token, alias):
         c = requests.delete(self.uri + "/%s" % alias,
-                headers={"Authorization": "Token %s" % token,
-                        "Content-Type": "application/json"})
+                            headers=h_authjs(token))
 
         if c.status_code != 204:
             return "Error in deleteCollection(): Invalid token or collection."
 
-        else:
-            return "Collection deleted!"
+        return "Collection deleted!"
 
     def getP(self, alias, slug):
         p = requests.get(self.uri + "/%s/posts/%s" % (alias, slug),
-            headers={"Content-Type": "application/json"})
+                         headers=h_js())
 
         if p.status_code != 200:
-            return "Error in retrieveCPost(): %s" % c.json()["error_msg"]
+            return "Error in retrieveCPost(): %s" % p.json()["error_msg"]
 
-        else:
-            cpost = p.json()["data"]
-            return cpost
+        cpost = p.json()["data"]
+        return cpost
 
     def getPs(self, alias, page=1):
         p = requests.get(self.uri + "/%s/posts" % alias,
-                            params={'page': page})
+                         params={'page': page})
 
         if p.status_code != 200:
-            return "Error in retrieveCPosts(): %s" % c.json()["error_msg"]
+            return "Error in retrieveCPosts(): %s" % p.json()["error_msg"]
 
-        else:
-            cposts = p.json()["data"]
-            return cposts
+        cposts = p.json()["data"]
+        return cposts
 
     def createP(self, token, alias, body, title=None):
-
         data = {"body": body,
                 "title": title}
 
         p = requests.post(self.uri + "/%s/posts" % alias, data=json.dumps(data),
-            headers={"Authorization": "Token %s" % token,
-                        "Content-Type": "application/json"})
+                          headers=h_authjs(token))
 
         if p.status_code != 201:
             return "Error in createCPost(): %s" % p.json()["error_msg"]
 
-        else:
-            cpost = p.json()["data"]
-            return cpost
+        cpost = p.json()["data"]
+        return cpost
 
-    def claimP(self, token, alias, id):
-
-        data = [{"id": id}]
+    def claimP(self, token, alias, post_id):
+        data = [{"id": post_id}]
 
         p = requests.post(self.uri + "/%s/collect" % alias, data=json.dumps(data),
-            headers={"Authorization": "Token %s" % token,
-                        "Content-Type": "application/json"})
+                          headers=h_authjs(token))
 
         if p.status_code != 200:
             return "Error in claimCPost(): %s" % p.json()["error_msg"]
 
-        else:
-            post = p.json()["data"]
-            return post
+        post = p.json()["data"]
+        return post
 
-    def pin(self, token, alias, id, position=1):
+    def pin(self, token, alias, post_id, position=1):
 
-        data = [{"id": id,
-                "position": position,}]
+        data = [{"id": post_id,
+                 "position": position,}]
 
         p = requests.post(self.uri + "/%s/pin" % alias, data=json.dumps(data),
-            headers={"Authorization": "Token %s" % token,
-                        "Content-Type": "application/json"})
+                          headers=h_authjs(token))
 
         if p.status_code != 200:
             return "Error in pinPost(): %s" % p.json()["error_msg"]
 
-        else:
-            post = p.json()["data"]
-            return post
+        post = p.json()["data"]
+        return post
 
-    def unpin(self, token, alias, id):
-
-        data = [{"id": id}]
+    def unpin(self, token, alias, post_id):
+        data = [{"id": post_id}]
 
         p = requests.post(self.uri + "/%s/unpin" % alias, data=json.dumps(data),
-            headers={"Authorization": "Token %s" % token,
-                        "Content-Type": "application/json"})
+                          headers=h_authjs(token))
 
         if p.status_code != 200:
             return "Error in unpinPost(): %s" % p.json()["error_msg"]
 
-        else:
-            post = p.json()["data"]
-            return post
+        post = p.json()["data"]
+        return post

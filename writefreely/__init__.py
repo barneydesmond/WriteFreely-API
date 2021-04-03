@@ -4,12 +4,13 @@ A flexible Write Freely API Client library for Python
 
 # pylint: disable=invalid-name, missing-function-docstring
 
-from .user import user
-from .posts import post
-from .collection import collection
-from .rwa import read
+from .user import User
+from .posts import Post
+from .collection import Collection
+from .rwa import Reader
 
-class client():
+class Client():
+    "Core client class for interaction"
     def __init__(self, domain):
         # When you instantiate a client, you must include the domain of your Write Freely instance
         # For example, c = writefreely.client('write.house')
@@ -17,10 +18,10 @@ class client():
 
         # The token for making authenticated requests
         self.token = ''
-        self.u = user(domain)
-        self.p = post(domain)
-        self.c = collection(domain)
-        self.r = read(domain)
+        self.u = User(domain)
+        self.p = Post(domain)
+        self.c = Collection(domain)
+        self.r = Reader(domain)
 
     def getDomain(self):
         return self.domain
@@ -56,27 +57,27 @@ class client():
         return channels
 
     # POST
-    def retrievePost(self, id):
-        post = self.p.get(id)
+    def retrievePost(self, post_id):
+        post = self.p.get(post_id)
         return post
 
     def createPost(self, body, title=None):
         post = self.p.create(self.token, body, title)
         return post
 
-    def updatePost(self, id, **kwargs):
-        post = self.p.update(self.token, id, **kwargs)
+    def updatePost(self, post_id, **kwargs):
+        post = self.p.update(self.token, post_id, **kwargs)
         return post
 
-    def deletePost(self, id):
-        post = self.p.delete(self.token, id)
+    def deletePost(self, post_id):
+        post = self.p.delete(self.token, post_id)
         return post
 
-    def claimPost(self, id, ptoken):
-        post = self.p.claim(self.token, id, ptoken)
+    def claimPost(self, post_id, ptoken):
+        post = self.p.claim(self.token, post_id, ptoken)
         return post
 
-# COLLECTION
+    # COLLECTION
     def retrieveCollection(self, alias):
         collection = self.c.get(alias)
         return collection
@@ -101,18 +102,18 @@ class client():
         cpost = self.c.createP(self.token, alias, body, title)
         return cpost
 
-    def claimCPost(self, alias, id):
-        cpost = self.c.claimP(self.token, alias, id)
+    def claimCPost(self, alias, post_id):
+        cpost = self.c.claimP(self.token, alias, post_id)
         return cpost
 
-    def pinPost(self, alias, id, position=1):
-        post = self.c.pin(self.token, alias, id, position)
+    def pinPost(self, alias, post_id, position=1):
+        post = self.c.pin(self.token, alias, post_id, position)
         return post
 
-    def upinPost(self, alias, id):
-        post = self.c.unpin(self.token, alias, id)
+    def upinPost(self, alias, post_id):
+        _ = self.c.unpin(self.token, alias, post_id)
 
-# READER
+    # READER
     def reader(self, skip=0):
         posts = self.r.get(skip)
         return posts
